@@ -1,0 +1,112 @@
+0 Data download
+
+Data should be stored in the matching sub-folders of the "data" folder. Data in the "inventory" and the "shapefiles" folders are provided and do not have to be downloaded.
+
+0_download_files:
+
+The data used for the calculations is soil water balance data from CGIAR-CSI available at http://www.cgiar-csi.org/data/global-high-resolution-soil-water-balance. 
+
+Data on irrigation are from the FAO's AQUASTAT information system available at http://www.fao.org/nr/water/aquastat/irrigationmap/index10.stm. 
+
+Soil data is from soilgrids.org and can be downloaded from their ftp server: ftp://ftp.soilgrids.org/data/recent/. This code also does that (since the files are huge, the execution might take some time).
+NOTE: A prepared and resampled file is provided at https://doi.org/10.3929/ethz-b-000253177 so you might skip downloading and preparing this data.
+
+Data on crop-area and potato-area has been downloaded from http://www.earthstat.org/data-download/. The datasets “Cropland and Pasture Area in 2000” and “Harvested Area and Yield for 175 Crops” are used.
+
+Data on potential potato-area has been downloaded from http://gaez.fao.org/Main.html. The dataset chosen was “Crop suitability index (class) for high input level rain-fed white potato”, Future period 2020s, MPI ECHAM4 B2, Without CO2 fertilization (res03ehb22020hsihr0wpo_package.zip)
+_______________________________
+
+1 Data preparation
+
+1a_prepare_irrigation_data:
+
+This code calculates the area actually irrigated as % of area and resamples it to a 1km resolution.
+
+1b_prepare_soil_water_data:
+
+This code scales soil water content data to the 1-5 (in the code 10-50) scale needed for the model and corrects them for irrigation (where they are smaller than 30 assuming that irrigated areas get to a soil moisture value of 30).
+
+1c_prepare_soilgrids:
+
+This code averages four soilgrid layers to one top soil clay content layer.
+
+1d_resample_soilgrid:
+
+This code has not been used since it works less efficient than resampling in ArcGIS.
+The top soil clay raster has been resampled to a 1km resolution in ArcGIS.
+The resampled file is provided at https://doi.org/10.3929/ethz-b-000253177.
+_______________________________
+
+2 Calculation of correction factors
+
+2a_soil_water_correction_factors:
+
+This code calculates the soil water correction factors according to the TKM model for all grid cells. Monthly values for the mid and the bottom soil are averaged to a yearly value.
+
+2b_topsoil_clay_correction_factors:
+
+This code multiplies the soil water correction factors with the clay content correction factors for the top soil for all grid cells. Monthly values are then averaged to a yearly value.
+_______________________________
+
+3 Calculation of characterization factors (for 100 years)
+
+3a_characterization_factors_100yrs_raster:
+
+This code calculates the characterization factors for each soil layer for each grid cell. Yearly mean impact averaged over a 100 years time horizon is calculated: top soil and mid soil impacts are accordingly divided by 100, subsoil impact is already given as a yearly value.
+_______________________________
+
+4 Inventory modeling with the TKM model
+
+4_tonkm:
+
+This code uses the equations of the TKM (ton-kilometer) model to translate the cultivation and machinery data files into corrected ton-kilometers per crop and ha for each of the three soil layers.
+_______________________________
+
+5 Impact calculation
+
+5a_impact_inventory_organic_vs_conventional:
+
+This code compares total ton-kilometers for organic and conventional crops.
+
+5b_impact_potato_vs_wheat:
+
+This code produces maps for a comparison of impact of potato and wheat.
+
+5c_impact_from_soil_layers_potato:
+
+This code produces maps that show the contribution of the different soil layers to total impact with the example of potato
+_______________________________
+
+6 Additional results and figures
+
+6Aa_crop-area_shapes:
+
+This code creates two shapefiles, one for crop-area and one for non-crop-area.
+
+6Ab_impact_potato_crop-area:
+
+This code calculates compaction impacts for growing potato on crop-area.
+
+6Ac_impact_potato_non-crop-area:
+
+This code calculates compaction impacts for growing potato on non-crop-area.
+
+6Ba_characterization_factors_figures:
+
+This code creates figures for the characterization factors at grid level for the three soil layers.
+
+6Bb_characterization_factors_100yrs_geo_units:
+
+This code calculates characterization factors for geo units (large countries are divided into the largest administrative units within the country and countries including islands are divided into mainland and islands). The raster-values within a unit are averaged.
+
+6Bc _characterization_factors_100yrs_geo_units_crop-area:
+
+This code calculates characterization factors for geo units. The raster-values within a unit are averaged whereby the values on non-crop area are set to no data.
+
+6Bd_characterization_factors_100yrs_countries:
+
+This code calculates characterization factors for countries. The raster-values within a country are averaged.
+
+6Be_characterization_factors_100yrs_countries_crop-area:
+
+This code calculates characterization factors for countries. The raster-values within a unit are averaged whereby the values on non-crop area are set to no data.
