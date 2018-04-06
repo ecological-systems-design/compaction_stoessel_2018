@@ -1,3 +1,9 @@
+# Assessing the environmental impacts of soil compaction in Life Cycle Assessment
+
+This code is related to the publication "Assessing the environmental impacts of soil compaction in Life Cycle Assessment" by Stoessel et al. (2018), available at https://www.sciencedirect.com/science/article/pii/S0048969718306211.
+
+The output as well as an prepared input file for the soil clay content can be found at https://doi.org/10.3929/ethz-b-000253177.
+
 The code is written to use the provided folder structure.  
 Data should be downloaded and saved accordingly (see 4).  
 People familiar with python environments may use the `py36_gis.yml` or the `requirements.txt` file.  
